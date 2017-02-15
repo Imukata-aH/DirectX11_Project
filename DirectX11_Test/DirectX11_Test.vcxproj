@@ -146,6 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphicsclass.cpp" />
+    <ClCompile Include="src\inputclass.cpp" />
     <ClCompile Include="src\main.cpp">
       <SubType>
       </SubType>
@@ -156,6 +158,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\graphicsclass.h" />
+    <ClInclude Include="include\inputclass.h" />
     <ClInclude Include="include\systemclass.h">
       <SubType>
       </SubType>
