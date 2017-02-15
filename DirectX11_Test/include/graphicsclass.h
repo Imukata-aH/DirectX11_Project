@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <windows.h>
+#include "d3dclass.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -20,4 +21,7 @@ public:
 
 private:
     bool Render();
+
+private:
+	D3DClass* m_Direct3D;
 };
