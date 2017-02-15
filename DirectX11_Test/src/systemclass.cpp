@@ -59,7 +59,7 @@ void SystemClass::Run()
 
 	ZeroMemory( &msg, sizeof( MSG ) );
 
-	bool done, result = false;
+	bool done { false }, result { false };
 	while( !done )
 	{
 		if ( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
