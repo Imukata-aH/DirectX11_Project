@@ -18,7 +18,7 @@ public:
 	bool Initialize( int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear );
 	void Shutdown();
 
-	void BegineScene( float r, float g, float b, float a );
+	void BeginScene( float red, float green, float blue, float alpha );
 	void EndScene();
 
 	ID3D11Device* GetDevice();
