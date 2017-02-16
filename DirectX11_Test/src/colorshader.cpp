@@ -1,4 +1,4 @@
-#include "colorshader.h"
+﻿#include "colorshader.h"
 
 ColorShader::ColorShader() :
 	m_vertexShader { 0 },
