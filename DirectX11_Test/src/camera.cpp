@@ -6,12 +6,15 @@ Camera::Camera() :
 	m_positionZ { 0 },
 	m_rotationX { 0 },
 	m_rotationY { 0 },
-	m_rotationZ { 0 },
-	m_viewMatrix { 0 }
+	m_rotationZ { 0 }
 {
 }
 
 Camera::Camera( const Camera& other )
+{
+}
+
+Camera::~Camera()
 {
 }
 
