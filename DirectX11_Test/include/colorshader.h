@@ -29,10 +29,10 @@ public:
 private:
 	bool InitializeShader( ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename );
 	void ShutdownShader();
-	void OutputShaderErrorMessage( ID3D10Blob*, HWND, WCHAR* );
+	void OutputShaderErrorMessage( ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename );
 
-	bool SetShaderParameters( ID3D11DeviceContext*, XMMATRIX, XMMATRIX, XMMATRIX );
-	void RenderShader( ID3D11DeviceContext*, int );
+	bool SetShaderParameters( ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix );
+	void RenderShader( ID3D11DeviceContext* deviceContext, int indexCount );
 
 private:
 	ID3D11VertexShader* m_vertexShader;

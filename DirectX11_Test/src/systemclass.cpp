@@ -17,7 +17,7 @@ SystemClass::~SystemClass()
 bool SystemClass::Initialize()
 {
 	int screenWidth { 0 }, screenHeight { 0 };
-	bool result { false };
+	bool result { true };
 
 	InitializeWindows( screenWidth, screenHeight );
 
@@ -32,7 +32,7 @@ bool SystemClass::Initialize()
 	result = m_Graphics->Initialize( screenWidth, screenHeight, m_hwnd );
 	if ( !result ) { return false; }
 
-	return true;
+	return result;
 }
 
 void SystemClass::Shutdown()
@@ -85,14 +85,14 @@ void SystemClass::Run()
 
 bool SystemClass::Frame()
 {
-	bool result;
+	bool result { true };
 
 	if ( m_Input->IsKeyDown( VK_ESCAPE ) ) { return false; }
 
 	result = m_Graphics->Frame();
 	if ( !result ) { return false; }
 
-	return true;
+	return result;
 }
 
 void SystemClass::InitializeWindows( int& screenWidth, int& screenHeight )

@@ -3,7 +3,7 @@
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow )
 {
 	SystemClass* system { new SystemClass };
-	bool result;
+	bool result { true };
 
 	if ( !system )
 	{

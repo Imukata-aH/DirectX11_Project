@@ -18,7 +18,7 @@ ColorShader::~ColorShader()
 
 bool ColorShader::Initialize( ID3D11Device* device, HWND hwnd )
 {
-	bool result { false };
+	bool result { true };
 
 	result = InitializeShader( device, hwnd, L"./shader/color.vs.hlsl", L"./shader/color.ps.hlsl" );
 	if ( !result ) { return false; }
@@ -31,7 +31,7 @@ void ColorShader::Shutdown()
 
 bool ColorShader::Render( ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix )
 {
-	bool result { false };
+	bool result { true };
 
 	result = SetShaderParameters( deviceContext, worldMatrix, viewMatrix, projectionMatrix );
 	if ( !result ) { return false; }
@@ -41,7 +41,7 @@ bool ColorShader::Render( ID3D11DeviceContext* deviceContext, int indexCount, XM
 
 bool ColorShader::InitializeShader( ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename )
 {
-	HRESULT result { false };
+	HRESULT result { true };
 	ID3D10Blob* errorMessage { 0 };
 	ID3D10Blob* vertexShaderBuffer { 0 };
 	ID3D10Blob* pixelShaderBuffer { 0 };
@@ -167,7 +167,7 @@ bool ColorShader::InitializeShader( ID3D11Device* device, HWND hwnd, WCHAR* vsFi
 	result = device->CreateBuffer( &matrixBufferDesc, NULL, &m_matrixBuffer );
 	if ( FAILED( result ) ) { return false; }
 
-	return true;
+	return result;
 }
 
 void ColorShader::ShutdownShader()
@@ -199,4 +199,82 @@ void ColorShader::ShutdownShader()
 		m_vertexShader->Release();
 		m_vertexShader = 0;
 	}
+}
+
+bool ColorShader::SetShaderParameters( ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix )
+{
+	HRESULT result { true };
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	MatrixBufferType* dataPtr;
+	unsigned int bufferNumber;
+
+	//////////////////////////////////////////
+	// Set up global variables in the shader
+	//////////////////////////////////////////
+
+	// Transpose the matrices to prepare them for the shader.
+	worldMatrix = XMMatrixTranspose( worldMatrix );
+	viewMatrix = XMMatrixTranspose( viewMatrix );
+	projectionMatrix = XMMatrixTranspose( projectionMatrix );
+
+	// Lock the constant buffer so it can be written to.
+	result = deviceContext->Map( m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource );
+	if ( FAILED( result ) ) { return false; }
+
+	dataPtr = (MatrixBufferType*)mappedResource.pData;
+
+	dataPtr->world = worldMatrix;
+	dataPtr->view = viewMatrix;
+	dataPtr->projection = projectionMatrix;
+
+	deviceContext->Unmap( m_matrixBuffer, 0 );
+
+	// Set the updated matrix buffer in the HLSL vertex shader
+	bufferNumber = 0;
+	deviceContext->VSSetConstantBuffers( bufferNumber, 1, &m_matrixBuffer );
+
+	return true;
+}
+
+void ColorShader::RenderShader( ID3D11DeviceContext* deviceContext, int indexCount )
+{
+	deviceContext->IASetInputLayout( m_layout );
+
+	deviceContext->VSSetShader( m_vertexShader, NULL, 0 );
+	deviceContext->PSSetShader( m_pixelShader, NULL, 0 );
+
+	deviceContext->DrawIndexed( indexCount, 0, 0 );
+}
+
+void ColorShader::OutputShaderErrorMessage( ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename )
+{
+	char* compileErrors;
+	unsigned long long bufferSize, i;
+	ofstream fout;
+
+
+	// Get a pointer to the error message text buffer.
+	compileErrors = (char*)( errorMessage->GetBufferPointer() );
+
+	// Get the length of the message.
+	bufferSize = errorMessage->GetBufferSize();
+
+	// Open a file to write the error message to.
+	fout.open( "shader-error.txt" );
+
+	// Write out the error message.
+	for ( i = 0; i<bufferSize; i++ )
+	{
+		fout << compileErrors[i];
+	}
+
+	// Close the file.
+	fout.close();
+
+	// Release the error message.
+	errorMessage->Release();
+	errorMessage = 0;
+
+	// Pop a message up on the screen to notify the user to check the text file for compile errors.
+	MessageBox( hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderFilename, MB_OK );
 }

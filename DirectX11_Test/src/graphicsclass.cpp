@@ -15,7 +15,7 @@ GraphicsClass::~GraphicsClass()
 
 bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
-	bool result { false };
+	bool result { true };
 
 	m_Direct3D = new D3DClass();
 	if ( !m_Direct3D ) { return false; }
@@ -42,12 +42,12 @@ void GraphicsClass::Shutdown()
 
 bool GraphicsClass::Frame()
 {
-	bool result { false };
+	bool result { true };
 
 	result = Render();
 	if ( !result ) { return false; }
 
-	return true;
+	return result;
 }
 
 bool GraphicsClass::Render()
