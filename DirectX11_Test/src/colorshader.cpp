@@ -22,6 +22,8 @@ bool ColorShader::Initialize( ID3D11Device* device, HWND hwnd )
 
 	result = InitializeShader( device, hwnd, L"./shader/color.vs.hlsl", L"./shader/color.ps.hlsl" );
 	if ( !result ) { return false; }
+
+	return result;
 }
 
 void ColorShader::Shutdown()
@@ -37,6 +39,8 @@ bool ColorShader::Render( ID3D11DeviceContext* deviceContext, int indexCount, XM
 	if ( !result ) { return false; }
 
 	RenderShader( deviceContext, indexCount );
+
+	return result;
 }
 
 bool ColorShader::InitializeShader( ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename )
@@ -167,7 +171,7 @@ bool ColorShader::InitializeShader( ID3D11Device* device, HWND hwnd, WCHAR* vsFi
 	result = device->CreateBuffer( &matrixBufferDesc, NULL, &m_matrixBuffer );
 	if ( FAILED( result ) ) { return false; }
 
-	return result;
+	return true;
 }
 
 void ColorShader::ShutdownShader()

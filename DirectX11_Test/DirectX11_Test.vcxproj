@@ -154,6 +154,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="src\model.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\systemclass.cpp">
       <SubType>
       </SubType>
@@ -164,6 +168,10 @@
     <ClInclude Include="include\d3dclass.h" />
     <ClInclude Include="include\graphicsclass.h" />
     <ClInclude Include="include\inputclass.h" />
+    <ClInclude Include="include\model.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\systemclass.h">
       <SubType>
       </SubType>
