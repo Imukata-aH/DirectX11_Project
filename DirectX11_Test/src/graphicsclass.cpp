@@ -31,14 +31,14 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Create the camera object.
-	m_camera = new Camera;
+	m_camera = new Camera();
 	if ( !m_camera ) { return false; }
 
 	// Set the initial position of the camera.
 	m_camera->SetPosition( 0.0f, 0.0f, -5.0f );
 
 	// Create the model object.
-	m_model = new Model;
+	m_model = new Model();
 	if ( !m_model ) { return false; }
 
 	// Initialize the model object.
@@ -50,7 +50,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Create the color shader object.
-	m_colorShader = new ColorShader;
+	m_colorShader = new ColorShader();
 	if ( !m_colorShader ) { return false; }
 
 	// Initialize the color shader object.

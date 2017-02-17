@@ -171,12 +171,18 @@ bool D3DClass::Initialize(
 
 	featureLevel = D3D_FEATURE_LEVEL_11_0;
 
+	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+#if defined(_DEBUG)
+	// If the project is in a debug build, enable the debug layer.
+	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
 	// Create the swap chain, Direct3D device, and Direct3D device context.
 	result = D3D11CreateDeviceAndSwapChain(
 		NULL, 
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL, 
-		0, 
+		0,//creationFlags, 
 		&featureLevel, 
 		1,
 		D3D11_SDK_VERSION, 
